@@ -3,6 +3,7 @@ const Posts = () => {
 
     return(
         <>
+            Posts
         </>
     )
 }
