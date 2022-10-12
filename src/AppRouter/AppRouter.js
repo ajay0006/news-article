@@ -5,7 +5,7 @@ import Header from "../components/header";
 import Footer from "../components/footer";
 import Home from "../components/home";
 import Contact from "../components/contact";
-import Posts from "../components/posts";
+import Post from "../components/post";
 
 
 const AppRouter = () => (
@@ -15,7 +15,7 @@ const AppRouter = () => (
             <Routes>
                 <Route path="/" element={<Home/>}/>
                 <Route path="contact" element={<Contact/>}/>
-                <Route path="article/:id" element={<Posts/>}/>
+                <Route path="article/:id" element={<Post/>}/>
             </Routes>
         </MainLayout>
         <Footer/>

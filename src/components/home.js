@@ -1,10 +1,10 @@
-
+import Posts from "./posts";
 
 const Home = () => {
 
     return(
         <>
-            Home
+            <Posts/>
         </>
     )
 }

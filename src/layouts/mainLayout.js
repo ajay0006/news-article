@@ -7,6 +7,7 @@ const MainLayout = (props) => {
     return(
         <Container className='mt-5 mb-5'>
             {props.children}
+            <ToastContainer/>
         </Container>
     )
 }
