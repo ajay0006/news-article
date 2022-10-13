@@ -1,5 +1,6 @@
 import {useRef, useEffect} from "react";
 import { useDispatch} from "react-redux";
+import { displayToast} from "./toats";
 import {addToNewsletter} from "../reducers/thunk";
 import {Form, Button} from "react-bootstrap";
 
@@ -15,9 +16,13 @@ const NewsLetter = () => {
             .unwrap()
             .then((response) => {
                 if(response.newsletter === 'added'){
+                    displayToast('SUCCESS','Thank you for subscribing' )
+                    textInput.current.value = "";
 
                 }
                 if(response.newsletter === 'failed'){
+                    displayToast('ERROR','You have subscribed in the past' )
+                    textInput.current.value = "";
 
                 }
             })
