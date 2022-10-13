@@ -1,5 +1,5 @@
 import { createSlice} from "@reduxjs/toolkit";
-import {getPosts} from "./thunk";
+import {getPosts, getPostsById} from "./thunk";
 
 export const postsSlice = createSlice({
     name: 'posts',
@@ -7,7 +7,8 @@ export const postsSlice = createSlice({
         loading: true,
         articles:{
             items: []
-        }
+        },
+        article: {}
     },
     reducers:{
 
@@ -23,6 +24,19 @@ export const postsSlice = createSlice({
 
             })
             .addCase(getPosts.rejected, (state) => {
+                state.loading = true
+
+            })
+            .addCase(getPostsById.pending, (state) => {
+                state.loading = true
+            })
+            .addCase(getPostsById.fulfilled, (state, action) => {
+                state.loading = false
+                console.log(action.payload.id, 'what is being saved in state')
+                state.article = action.payload
+
+            })
+            .addCase(getPostsById.rejected, (state) => {
                 state.loading = true
 
             })

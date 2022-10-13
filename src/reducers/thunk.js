@@ -16,7 +16,8 @@ export const getPosts = createAsyncThunk(
             if (!equalityCheck(prevState.articles.items, response.data)) {
                 return {
                     items: [...prevState.articles.items, ...response.data],
-                    page: page
+                    page: page,
+                    end: response.data.length === 0
                 }
             } else {
                 return {
@@ -27,4 +28,51 @@ export const getPosts = createAsyncThunk(
             throw error
         }
     }
+)
+
+export const getPostsById = createAsyncThunk(
+    "posts/getPostsById",
+    async (id) => {
+        try{
+            const response = await axios.get(`${dataLocation}/posts/${id}`);
+            return response.data;
+        }
+        catch (error){
+            throw error
+        }
+    }
+
+)
+
+export const addToNewsletter = createAsyncThunk(
+    "users/addToNewsletter",
+    async ({email}) => {
+        try{
+            const findEmailExist = await axios.get(`${dataLocation}/newsletter?email=${email}`)
+
+            if(!Array.isArray(findEmailExist.data) || !findEmailExist.data.length){
+                console.log(findEmailExist,'it got past the if')
+                const response = await axios ({
+                    method:"POST",
+                    url:`${dataLocation}/newsletter`,
+                    data:{
+                        email
+                    }
+                });
+                return{
+                    newsletter: 'added',
+                    email: response.data
+                }
+            }
+            else{
+                return {
+                    newsletter: 'failed',
+                }
+            }
+        }
+        catch (error){
+            throw error
+        }
+    }
+
 )

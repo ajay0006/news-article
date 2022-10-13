@@ -1,4 +1,5 @@
 import { createSlice} from "@reduxjs/toolkit";
+import { addToNewsletter} from "./thunk";
 
 export const usersSlice = createSlice({
     name: 'users',
@@ -6,6 +7,13 @@ export const usersSlice = createSlice({
         actions: {}
     },
     reducers:{
+
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(addToNewsletter.fulfilled, (state, action) =>{
+                state.action = action.payload
+            })
 
     }
 })

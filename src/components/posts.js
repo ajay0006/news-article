@@ -13,9 +13,14 @@ const Posts = () => {
     useEffect(() => {
        // if (posts.articles.items.length <= 0) {
             dispatch(getPosts({}))
-            // eslint-disable-next-line
         //}
+        // eslint-disable-next-line
     }, [])
+
+    const loadMorePosts = () => {
+        const page = posts.articles.page + 1;
+        dispatch(getPosts({page}))
+    }
 
 
     return (
@@ -49,8 +54,24 @@ const Posts = () => {
                         </div>
                     ))
                     : null}
-
             </Masonry>
+            {posts.loading ?
+            <div style={{ textAlign: "center"}}>
+                <Spinner animation='border' role='status'>
+                    <span className= 'visually-hidden'> Loading ... </span>
+                </Spinner>
+
+            </div>
+            :null}
+
+            {
+                !posts.articles.end && !posts.loading ?
+                    <Button variant='outline-dark' onClick={() => loadMorePosts()}>
+                        Load More
+                    </Button>
+
+                    :null
+            }
         </>
     )
 }

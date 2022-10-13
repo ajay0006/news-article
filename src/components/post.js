@@ -1,8 +1,51 @@
-const Post = () => {
+import {useEffect} from "react";
+import {useParams} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {DateTime} from "luxon";
+import {getPostsById} from "../reducers/thunk";
+import {Spinner} from "react-bootstrap";
 
+const Post = () => {
+    const posts = useSelector((state) => state.posts);
+    const dispatch = useDispatch();
+    let params = useParams().id;
+
+    useEffect(() =>{
+        dispatch(getPostsById(params))
+    },[])
     return(
         <>
-            This is the post page
+            { posts.article ?
+                <div className='article_container'>
+                    <h1> {posts.article.title}</h1>
+                    <div
+                    style={{
+                        background: `url(${posts.article.imageXl})`
+                    }}
+                    className='image'>
+                    </div>
+                    <div className='author'>
+                        Created by: <span>{posts.article.author} - {(DateTime.fromISO(posts.article.createdAt).toLocaleString({
+                        month: 'long',
+                        day: 'numeric'
+                    }))}</span>
+                    </div>
+                    <div className='mt-3 content'>
+                        <div dangerouslySetInnerHTML={{
+                            __html: posts.article.content
+                        }}></div>
+                    </div>
+                    {posts.loading ?
+                        <div style={{ textAlign: "center"}}>
+                            <Spinner animation='border' role='status'>
+                                <span className= 'visually-hidden'> Loading ... </span>
+                            </Spinner>
+
+                        </div>
+                        :null}
+
+                </div>
+                :null}
         </>
     )
 }

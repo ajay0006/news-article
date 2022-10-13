@@ -202,9 +202,10 @@
     }
   ],
   "newsletter": [
-
+    {
+      "email": "lorem@gmail.com",
+      "id": 1
+    }
   ],
-  "contact": [
-
-  ]
+  "contact": []
 }
