@@ -1,7 +1,8 @@
-import {useRef, useEffect} from "react";
+import {useRef} from "react";
 import { useDispatch} from "react-redux";
 import { displayToast} from "./toats";
 import {addToNewsletter} from "../reducers/thunk";
+import { clearArticleState} from "../reducers/postsReducer";
 import {Form, Button} from "react-bootstrap";
 
 const NewsLetter = () => {
@@ -25,8 +26,11 @@ const NewsLetter = () => {
                     textInput.current.value = "";
 
                 }
+
+                dispatch(clearArticleState())
             })
     }
+
     return (
         <div className='newsletter_container'>
             <h1>

@@ -3,6 +3,7 @@ import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {DateTime} from "luxon";
 import {getPostsById} from "../reducers/thunk";
+import { clearArticleState } from "../reducers/postsReducer";
 import {Spinner} from "react-bootstrap";
 
 const Post = () => {
@@ -12,7 +13,16 @@ const Post = () => {
 
     useEffect(() =>{
         dispatch(getPostsById(params))
+        // eslint-disable-next-line
     },[])
+
+    useEffect(() => {
+        return () => {
+            dispatch(clearArticleState())
+        }
+        // eslint-disable-next-line
+    },[])
+
     return(
         <>
             { posts.article ?
@@ -46,6 +56,7 @@ const Post = () => {
 
                 </div>
                 :null}
+
         </>
     )
 }

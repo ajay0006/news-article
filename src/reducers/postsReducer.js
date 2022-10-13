@@ -11,6 +11,9 @@ export const postsSlice = createSlice({
         article: {}
     },
     reducers:{
+        clearArticleState: (state) =>{
+            state.article = {}
+        }
 
     },
     extraReducers:(builder)=>{
@@ -32,7 +35,6 @@ export const postsSlice = createSlice({
             })
             .addCase(getPostsById.fulfilled, (state, action) => {
                 state.loading = false
-                console.log(action.payload.id, 'what is being saved in state')
                 state.article = action.payload
 
             })
@@ -43,5 +45,5 @@ export const postsSlice = createSlice({
     }
 })
 
-
+export const { clearArticleState } = postsSlice.actions
 export default postsSlice.reducer

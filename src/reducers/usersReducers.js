@@ -7,6 +7,9 @@ export const usersSlice = createSlice({
         actions: {}
     },
     reducers:{
+        clearActionsState: (state) => {
+            state.actions = {}
+        }
 
     },
     extraReducers: (builder) => {
@@ -18,5 +21,5 @@ export const usersSlice = createSlice({
     }
 })
 
-
+export const { clearActionsState } = usersSlice.actions
 export default usersSlice.reducer
