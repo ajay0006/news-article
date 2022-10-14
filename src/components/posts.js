@@ -1,3 +1,4 @@
+// useSelector to access the state and useDispatch to run the actions from the reducer
 import {useSelector, useDispatch} from "react-redux";
 import {useEffect} from "react";
 import {Button, Spinner} from "react-bootstrap";
@@ -10,16 +11,20 @@ const Posts = () => {
     const posts = useSelector((state) => state.posts)
     const dispatch = useDispatch();
 
+    // when the application first runs
     useEffect(() => {
-       // if (posts.articles.items.length <= 0) {
-            dispatch(getPosts({}))
-        //}
+        if (posts.articles.items.length <= 0)
+        {
+            dispatch(getPosts({page:1, order: 'desc', limit: 6}))
+        }
         // eslint-disable-next-line
     }, [])
 
+    // update the page number and load data that corresponds to that page
     const loadMorePosts = () => {
         const page = posts.articles.page + 1;
-        dispatch(getPosts({page}))
+        dispatch(getPosts({page, order: 'desc', limit: 6}))
+
     }
 
 
@@ -56,13 +61,13 @@ const Posts = () => {
                     : null}
             </Masonry>
             {posts.loading ?
-            <div style={{ textAlign: "center"}}>
-                <Spinner animation='border' role='status'>
-                    <span className= 'visually-hidden'> Loading ... </span>
-                </Spinner>
+                <div style={{textAlign: "center"}}>
+                    <Spinner animation='border' role='status'>
+                        <span className='visually-hidden'> Loading ... </span>
+                    </Spinner>
 
-            </div>
-            :null}
+                </div>
+                : null}
 
             {
                 !posts.articles.end && !posts.loading ?
@@ -70,7 +75,7 @@ const Posts = () => {
                         Load More
                     </Button>
 
-                    :null
+                    : null
             }
         </>
     )

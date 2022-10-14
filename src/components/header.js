@@ -1,4 +1,6 @@
 import { Nav, Navbar} from "react-bootstrap";
+// the reason we are using the LinkContainer is that the Link to="" functionality of  won't work,
+// so we are importing the linkContainer, so we can make links clickable and actionable
 import { LinkContainer } from 'react-router-bootstrap'
 
 const Header = () => {

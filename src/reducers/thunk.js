@@ -9,20 +9,25 @@ export const getPosts = createAsyncThunk(
         try {
             const response = await axios.get(`${dataLocation}/posts?_page=${page}&_limit=${limit}&_order=${order}&_sort=id`);
             const prevState = thunkAPI.getState().posts
-            const equalityCheck = require('deep-equal')
+            // library that does deep check to se if objects are equal or nah
+            //const equalityCheck = require('deep-equal')
 
             //      if (JSON.stringify(prevState.articles.items) !== JSON.stringify(response.data))
+            // returns false if they aren't equal, need true to run so used the !, this if statement stops the same data from being duplicated as many times as the get is called
 
-            if (!equalityCheck(prevState.articles.items, response.data)) {
+            //if (!equalityCheck(prevState.articles.items, response.data)) {
                 return {
+                    // spread out the values in the previous state array and add the spread new one
                     items: [...prevState.articles.items, ...response.data],
                     page: page,
+                    // if the last data has been reached set end to true
                     end: response.data.length === 0
-                }
-            } else {
-                return {
-                    items: [...prevState.articles.items]
-                }
+                //}
+          //  } else {
+               // return {
+                    // if the data in state is the same as that been retrieved, then replace state with its original value
+               //     items: [...prevState.articles.items]
+               // }
             }
         } catch (error) {
             throw error
