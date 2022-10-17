@@ -1,35 +1,50 @@
-import { useFormik} from "formik";
-import * as yup from 'yup'
+import {useFormik} from "formik";
+import * as yup from 'yup';
+import {Alert} from "react-bootstrap";
+import {useDispatch} from "react-redux";
+import { saveContactForm} from "../reducers/thunk";
+import { displayToast} from "./toats";
 
 const Contact = () => {
+    const dispatch = useDispatch();
 
     const formik = useFormik({
         initialValues: {
             firstname: "",
             lastname: "",
             email: "",
-            country: "",
-            state: "",
-            zip: ""
+            message: ''
         },
         validationSchema: yup.object({
             firstname: yup.string().required("Your First name is required"),
             lastname: yup.string().required("Your Last name is required"),
             email: yup.string().required("Your E-mail is required").email("You have entered an invalid email"),
-            country: yup.string().required("Your Country is required"),
-            state: yup.string().required("Your State is required"),
-            zip: yup.string().required("Your Postal code is required"),
-
+            message: yup.string().max(500, 'The message is too long')
         }),
-        onSubmit: values => {console.log(values)},
+        onSubmit: (values, {resetForm}) => {
+            console.log(values)
+            dispatch(saveContactForm(values))
+                .unwrap()
+                .then((response) => {
+                    if (response)
+                    {
+                        resetForm();
+                        displayToast('SUCCESS', "Thank you for your message, we will contact you as soon as possible")
+                    }
+                })
+                .catch(error =>
+                {
+                    displayToast('ERROR',"Sorry try again later")
+                })
+        },
     })
 
-    return(
+    return (
         <>
             <div className="container">
                 <div className="col-md-12 mt-5">
                     <form onSubmit={formik.handleSubmit}>
-                        <h4 className="mb-3">Personal information</h4>
+                        <h4 className="mb-3">Contact Us</h4>
                         <div className="row">
                             <div className="col-md-6 mb-3">
                                 <label htmlFor="firstname">First name</label>
@@ -39,7 +54,11 @@ const Contact = () => {
                                        name="firstname"
                                        {...formik.getFieldProps('firstname')}
                                 />
-                                {formik.errors.firstname && formik.touched.firstname? <span>{formik.errors.firstname}</span> : null}
+
+                                {formik.errors.firstname && formik.touched.firstname ?
+                                    <Alert variant='danger'>
+                                        <span>{formik.errors.firstname}</span>
+                                    </Alert> : null}
                             </div>
                             <div className="col-md-6 mb-3">
                                 <label htmlFor="lastname">Last name</label>
@@ -51,8 +70,11 @@ const Contact = () => {
                                     {...formik.getFieldProps('lastname')}
 
                                 />
-                                {formik.errors.lastname && formik.touched.lastname ? <span>{formik.errors.lastname}</span> : null}
-
+                                {formik.errors.lastname && formik.touched.lastname ?
+                                    <Alert variant='danger'>
+                                        <span>{formik.errors.lastname}</span>
+                                    </Alert>
+                                    : null}
                             </div>
                         </div>
 
@@ -65,47 +87,23 @@ const Contact = () => {
                                    {...formik.getFieldProps('email')}
 
                             />
-                            {formik.errors.email && formik.touched.email ? <span>{formik.errors.email}</span> : null}
+                            {formik.errors.email && formik.touched.email ?
+                                <Alert variant='danger'>
+                                    <span>{formik.errors.email}</span>
+                                </Alert>
+                                : null}
 
                         </div>
 
 
                         <div className="row">
-                            <div className="col-md-5 mb-3">
-                                <label htmlFor="country">Country</label>
-                                <select className="custom-select d-block w-100" id="country" name="country"
-                                        {...formik.getFieldProps('country')}
-
-                                >
-                                    <option value="">Choose...</option>
-                                    <option value="US">United States</option>
-                                    <option value="CA">Canada</option>
-                                    <option value="NL">Netherlands</option>
-                                </select>
-
-                            </div>
-                            <div className="col-md-4 mb-3">
-                                <label htmlFor="state">State</label>
-                                <select className="custom-select d-block w-100" id="state" name="state"
-                                        {...formik.getFieldProps('state')}
-
-                                >
-                                    <option value="">Choose...</option>
-                                    <option value="california">California</option>
-                                    <option value="toronto">Toronto</option>
-                                    <option value="utrech">Utrech</option>
-                                </select>
-
-                            </div>
-                            <div className="col-md-3 mb-3">
-                                <label htmlFor="zip">Zip</label>
-                                <input type="text"
-                                       className="form-control"
-                                       id="zip"
-                                       name="zip"
-                                       {...formik.getFieldProps('zip')}
-
-                                />
+                            <div className="col-md-6 mb-3">
+                                <label htmlFor="message">Message</label>
+                                <textarea className='form-control'
+                                          id='message'
+                                          name='message'
+                                          rows='4'
+                                          {...formik.getFieldProps('message')}/>
                             </div>
                         </div>
 
