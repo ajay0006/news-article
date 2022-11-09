@@ -21,7 +21,7 @@ export const postsSlice = createSlice({
     },
     // this reducer is for actions that are not async
     reducers:{
-        clearArticleState: (state) =>{
+        clearArticleState: (state) => {
             state.article = {}
         }
 
